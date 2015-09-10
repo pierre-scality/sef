@@ -75,7 +75,7 @@ copy rest connector backup cron for {{ ctor_index }}:
 configure rest connector backup cron for {{ ctor_index }}:
   file.replace:
     - name: /etc/cron.daily/scality-rest-connector-{{ ctor_index }}-backup
-    - pattern: ^package=scality-rest-connector
+    - pattern: ^package=scality-rest-connector$
     - repl: package=scality-rest-connector-{{ ctor_index }}
     - require:
       - file: copy rest connector backup cron for {{ ctor_index }}
@@ -99,6 +99,13 @@ fix root directories in r0.0 auth_group.xml {{ ctor_index }}:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
     - watch_in:
       - service: scality-multi-rs2
+
+/var/lib/scality-rest-connector-{{ ctor_index }}:
+  file.directory:
+    - user: root
+    - dir_mode: 755
+    - group: root
+
 
 {% for subdir in ('local',) %}
 fix node ipbind in {{ subdir }} config.xml {{ ctor_index }}:
