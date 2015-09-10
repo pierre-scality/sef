@@ -100,6 +100,28 @@ fix root directories in r0.0 auth_group.xml {{ ctor_index }}:
     - watch_in:
       - service: scality-multi-rs2
 
+{% for subdir in ('local',) %}
+fix node ipbind in {{ subdir }} config.xml {{ ctor_index }}:
+  cmd.run:
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="ipbind" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="ipbind"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - require:
+      - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
+      - pkg: xmlstarlet
+    - watch_in:
+      - service: scality-multi-rs2
+
+fix admin ipbind in {{ subdir }} config.xml {{ ctor_index }}:
+  cmd.run:
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_interface_admin"]/val[name="ipbind" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_interface_admin"]/val[name="ipbind"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - require:
+      - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
+      - pkg: xmlstarlet
+    - watch_in:
+      - service: scality-multi-rs2
+{% endfor %}
+
 
 {% for subdir in ('local',) %}
 fix node ipbind in {{ subdir }} config.xml {{ ctor_index }}:
