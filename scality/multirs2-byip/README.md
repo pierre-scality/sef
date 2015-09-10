@@ -76,15 +76,16 @@ git out multirs2 to /srv/scality/salt/local/scality
 do the configuration 
 
 Run the state :
+Assuming the your code is in /srv/scality/salt/local/multirs2 :
 ```shell
-salt 'machine' state.sls scality.custom 
+salt 'machine' state.sls scality.multirs2.custom 
 ```
 
 ## Possible improvement
 
-The code keep some relicat of former purpose of the script and should be reviewed.
 Some paramters should go to the pillar.
-
+The fancy loop to generate interface list should be replaced by a interface list in the pillar
+Should be merged with multirs2 by port
 
 ## Status 
 Tested on CentOS. Used on prod.
