@@ -129,8 +129,8 @@ fix admin ipbind in {{ subdir }} config.xml {{ ctor_index }}:
       - service: scality-multi-rs2
 {% endfor %}
 
+{% for subdir in ('r0.0',) %}
 
-{% for subdir in ('local',) %}
 fix node ipbind in {{ subdir }} config.xml {{ ctor_index }}:
   cmd.run:
     - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="ipbind" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
@@ -149,37 +149,12 @@ fix admin ipbind in {{ subdir }} config.xml {{ ctor_index }}:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
       - pkg: xmlstarlet
     - watch_in:
-{% endfor %}
-
-
-
-{% for subdir in ('r0.0',) %}
-
-fix node ipbind in {{ subdir }} config.xml {{ ctor_index }}:
-  cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="ipbind" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="ipbind"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
-    - require:
-      - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
-      - pkg: xmlstarlet
-    - watch_in:
       - service: scality-multi-rs2
 
-fix admin ipbind in {{ subdir }} config.xml {{ ctor_index }}:
-  cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_interface_admin"]/val[name="ipbind" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_interface_admin"]/val[name="ipbind"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
-    - require:
-      - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
-      - pkg: xmlstarlet
-    - watch_in:
-      - service: scality-multi-rs2
-
-# Fix
 fix bwsrestserverip in {{ subdir }} config.xml {{ ctor_index }}:
   cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestserverip" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestserverip"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestserverip" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestserverip"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
     - require:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
       - pkg: xmlstarlet
@@ -188,8 +163,8 @@ fix bwsrestserverip in {{ subdir }} config.xml {{ ctor_index }}:
 
 fix bwsrestsslserverip in {{ subdir }} config.xml {{ ctor_index }}:
   cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestsslserverip" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestsslserverip"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestsslserverip" and text="{{ ctor_ip }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="msgstore_protocol_restapi"]/val[name="bwsrestsslserverip"]/text' -v "{{ ctor_ip }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/{{ subdir }}/config.xml
     - require:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
       - pkg: xmlstarlet
@@ -200,8 +175,8 @@ fix bwsrestsslserverip in {{ subdir }} config.xml {{ ctor_index }}:
 
 set password for connector {{ ctor_index }}:
   cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="password" and text="{{ scality.credentials.internal_password }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="password"]/text' -v "{{ scality.credentials.internal_password }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="password" and text="{{ scality.credentials.internal_password }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="password"]/text' -v "{{ scality.credentials.internal_password }}" /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
     - require:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
       - pkg: xmlstarlet
@@ -210,8 +185,8 @@ set password for connector {{ ctor_index }}:
 
 disable SSL on the 8184+ port {{ ctor_index }}:
   cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="usessl" and text="0"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="usessl"]/text' -v 0 /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="usessl" and text="0"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_cluster_node"]/val[name="usessl"]/text' -v 0 /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
     - require:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
       - pkg: xmlstarlet
@@ -220,8 +195,8 @@ disable SSL on the 8184+ port {{ ctor_index }}:
 
 set log dir for connector {{ ctor_index }}:
   cmd.run:
-    - name: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_core_logs"]/val[name="logsdir" and text="{{ scality.log.base_dir }}/scality-rest-connector-{{ ctor_index }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
-    - unless: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_core_logs"]/val[name="logsdir"]/text' -v {{ scality.log.base_dir }}/scality-rest-connector-{{ ctor_index }} /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
+    - unless: xmlstarlet sel -t -c '/section [name="config"]/branch [name="ov_core_logs"]/val[name="logsdir" and text="{{ scality.log.base_dir }}/scality-rest-connector-{{ ctor_index }}"]' /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
+    - name: xmlstarlet ed -P --inplace -u '/section [name="config"]/branch [name="ov_core_logs"]/val[name="logsdir"]/text' -v {{ scality.log.base_dir }}/scality-rest-connector-{{ ctor_index }} /etc/scality-rest-connector-{{ ctor_index }}/confdb/r0.0/config.xml
     - require:
       - cmd: /etc/scality-rest-connector-{{ ctor_index }}/
       - pkg: xmlstarlet
