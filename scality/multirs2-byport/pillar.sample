@@ -1,0 +1,13 @@
+# In this pillar we get the four ip addresses on eth1..4
+
+scality:
+  rest-connector:
+    instances:
+{%- for this in range(4) %}
+      -
+        index: {{ loop.index }}
+        name: {{ grains['id']}}-c{{ loop.index }}
+        test: {{ loop.index }}
+        ip: {{ salt['network.interface_ip']('eth%d' % loop.revindex)}}
+{%- endfor %}
+

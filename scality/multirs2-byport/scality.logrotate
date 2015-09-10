@@ -1,0 +1,11 @@
+/scality/log/scality-syslog/sproxyd.log {
+    missingok
+    copytruncate
+    compress
+    weekly
+    rotate 4
+    notifempty
+    sharedscripts
+    delaycompress
+    endscript
+}
