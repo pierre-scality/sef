@@ -2,7 +2,6 @@
 include:
    - scality.rest-connector.registered
    - scality.req.python
-#  - .log
 
 {% from "scality/map.jinja" import scality with context %}
 
@@ -15,18 +14,6 @@ xmlstarlet:
   pkg.installed
 
 {% set prod_ip = salt['network.interface_ip'](scality.prod_iface) %}
-
-# setup configuration repositories for multiple RS2 connectors
-
-# the scality-rest-connector service needs to start at least once
-# for all the files under confdb to be created
-
-#cycle rest connector:
-#  cmd.run:
-#    - name: service scality-rest-connector start && sleep 5 && service scality-rest-connector stop && sleep 5 && ls /etc/scality-rest-connector/confdb/
-#    - unless: test -d /etc/scality-rest-connector-1
-#    - require:
-#      - {{ scality.service_require }}: scality-rest-connector
 
 cleanup default connector:
   cmd.run:
@@ -250,6 +237,7 @@ scality-multi-rs2:
     - mode: 0755
   service.running:
     - enable: True
+	- restart: True
     - require:
       - file: scality-multi-rs2
       - service: scality-rest-connector
