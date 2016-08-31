@@ -1,0 +1,60 @@
+{% from "scality/map.jinja" import scality with context %}
+
+{% set cidr = salt['pillar.get']('scality:data_ring_dev:cidr') %}
+{% set ip = salt['network.ip_addrs'](cidr=cidr)[0] %}
+{% set cidr1 = salt['pillar.get']('scality:data_ring_stg:cidr') %}
+{% set ip1 = salt['network.ip_addrs'](cidr=cidr1)[0] %}
+{% set cidr2 = salt['pillar.get']('scality:data_ring_tst:cidr') %}
+{% set ip2 = salt['network.ip_addrs'](cidr=cidr2)[0] %}
+
+LoadModule proxy_module modules/mod_proxy.so
+# {{ cidr }} {{ cidr1 }} {{ cidr2 }}
+Listen {{ ip }}:82
+Listen {{ ip1 }}:82
+Listen {{ ip2 }}:82
+
+<VirtualHost {{ ip }}:82>
+    ServerName {{ ip }}
+    ProxyRequests Off
+    ProxyVia Off
+
+<Proxy *>
+    Order Deny,Allow
+    Allow from all
+</Proxy>
+
+    RewriteEngine on
+    RewriteRule /proxy/chord(.*) "http://localhost:81/proxy/{{ scality.data_ring_dev.path }}_chord$1" [P]
+    ProxyPassReverse /proxy/{{ scality.data_ring_dev.path }}_chord http://{{ ip }}:82/proxy/chord
+</VirtualHost>
+
+<VirtualHost {{ ip1 }}:82>
+    ServerName {{ ip1 }}
+    ProxyRequests Off
+    ProxyVia Off
+
+<Proxy *>
+    Order Deny,Allow
+    Allow from all
+</Proxy>
+    
+    RewriteEngine on
+    RewriteRule /proxy/chord(.*) "http://localhost:81/proxy/{{ scality.data_ring_stg.path }}_chord$1" [P]
+    ProxyPassReverse /proxy/{{ scality.data_ring_stg.path }}_chord http://{{ ip1 }}:82/proxy/chord
+</VirtualHost>
+
+<VirtualHost {{ ip2 }}:82>
+    ServerName {{ ip2 }}
+    ProxyRequests Off
+    ProxyVia Off
+
+<Proxy *>
+    Order Deny,Allow
+    Allow from all
+</Proxy>
+    
+    RewriteEngine on
+    RewriteRule /proxy/chord(.*) "http://localhost:81/proxy/{{ scality.data_ring_tst.path }}_chord$1" [P]
+    ProxyPassReverse /proxy/{{ scality.data_ring_tst.path }}_chord http://{{ ip2 }}:82/proxy/chord
+</VirtualHost>
+
