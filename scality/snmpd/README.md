@@ -7,25 +7,24 @@ This formula has 2 purpose :
 2 - Configure snmp on sup and snmptrad to get the trap
 
 ## Configuration
-The base is from existing snmpd state.
+This formulas are build from standard snmpd ones.
 
-It is intended to be in local tree (/srv/scality/salt/local/scality).
+The init state is to be run on  all servers, it will copy a functionnal snmpd.conf file with trap sink set to supervisor (see map.jinja)
 
-The init state is for all servers 
+The sup state is to run after on sup only, it will prepare and start snmptrapd for testing.
 
-The sup state is to run after on sup only.
+No need to change pillar but the local map.jinja has been modified.
 
-No need to change pillar but the local map.jinja has been modified
-
-The following lines gives the trapsink of the hosts, so you could use another trapsink server
+map.jinja file  has the 2 following entries added:
 ```yaml
-        'trapsink': salt['pillar.get']('scality:supervisor_ip') 
+        'trapsinkenable': False,
+        'trapsink': salt['pillar.get']('scality:supervisor_ip')
 ```
-In above sample we have 2 SSD that will hold respectivly odd and even disks
 
+If trapsinkenable is set to True, snmptrapd will be configured on the sup and started (service not started)
 
 ## Usage 
-After copying the files :
+After copying the files to /srv/scality/salt/local/scality/snmpd:
 
 Run salt '*' state.sls scality.snmpd 
 

@@ -1,8 +1,5 @@
 {% from "scality/snmpd/map.jinja" import snmpd with context %}
 
-include:
-  - scality.sagentd
-
 {{ snmpd.main_config }}:
   file.managed:
    - source: salt://scality/snmpd/files/snmpd.conf.tmpl
@@ -22,4 +19,3 @@ include:
 
 net-snmp-utils:
   pkg.installed
-
