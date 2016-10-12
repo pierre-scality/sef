@@ -1,0 +1,2 @@
+include:
+  - scality.rest-connector
