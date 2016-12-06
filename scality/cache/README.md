@@ -1,4 +1,4 @@
-# Introduction
+# Introduction
 
 This formula deploy the nginx lua cache in place of existing dewpoint installation
 
@@ -10,21 +10,21 @@ The source cache dev is provided as a tar file.
 
 It may be recompiled and replaced if needed.
 
-## Configuration
+## Configuration
 
-Copy your original source dwopoint.sofs file as  dewpoint-sofs.js.nocache
+Copy your original source dewpoint.sofs file as  dewpoint-sofs.js.nocache
 
 Make the neeed modifications in dewpoint-sofs.js.nocache
 
 Same thing for dewpoint.js
+
+A local copy of config file will be done on first run.
 
 The nginx configuration is sca-lb.conf that you may need to modify.
 
 It does not cover multiple instances of dewpoint.
 
 The salt cache source must be in {saltroot}/salt/local/cache/
-
-The first install will copy dewpoint.js and dewpoint-sofs.js with before-scality-cache extention.
 
 The stripe  size, inomode2 cache type and other few parameters are changed as this diff :
 
@@ -53,25 +53,25 @@ The stripe  size, inomode2 cache type and other few parameters are changed as th
 Run salt -G roles:ROLE_CONN_CDMI state.sls scality.cache.install 
 
 # Revert back to httpd/dewpoint
-Run salt -G roles:ROLE_CONN_CDMI state.sls scality.cache.install 
+Run salt -G roles:ROLE_CONN_CDMI state.sls scality.cache.cleanup 
 
 In install.sls change the rpm version if needed here  
 ```yaml
 {% set cacherpm = "scality-nginx-cache-2-7.x86_64.rpm" %}
 
 ```
-### Pillar 
+### Pillar 
 
 Uneeded
 
-## Possible improvement
+## Possible improvement
 
 Add multi instance dewpoint 
 
 Clean up the source scality-cache package to not overwrite dewpoint config.
 
-## Status 
+## Status 
 Tested on CentOS. Used on prod.
 
-## Original writter
+## Original writter
 Pierre Merle
