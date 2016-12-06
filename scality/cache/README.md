@@ -46,6 +46,7 @@ The stripe  size, inomode2 cache type and other few parameters are changed as th
 <         "stripe_size": 2097152,
 ```
 
+Sample files are provided with .sample extentions.
 
 ### Usage 
 

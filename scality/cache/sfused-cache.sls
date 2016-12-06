@@ -1,3 +1,9 @@
+dewpoint file:
+  file.managed:
+    - source: salt://scality/cache/dewpoint.js.cache
+    - name: /etc/dewpoint.js
+
+
 scality-dewpoint-fcgi:
   service.running:
     - watch:
