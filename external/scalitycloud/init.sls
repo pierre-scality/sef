@@ -1,2 +1,4 @@
 include:
   - .rootperm
+  - .host
+  - .package
