@@ -11,16 +11,11 @@ sshd:
 
 root:
   user.present:
-    - password: $1$B7pp7UQJ$jrhbpVaE8pi5ShBB1pCpJ.
-
-generate ssh keys:
-  cmd.run:
-    - name: ssh-keygen -q -N '' -f /root/.ssh/id_rsa
-    - unless: test -f /root/.ssh/id_rsa.pub
+    - password: $1$ExZrpF5T$tgNSK3gMxDfMQnik.0tB4/
 
 authorize sup key:
   ssh_auth.present:
     - user: root
-    - source: /root/.ssh/id_rsa.pub
+    - source: salt://scalitycloud/id_rsa.pub
     - config: /root/.ssh/authorized_keys
 

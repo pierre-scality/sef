@@ -12,3 +12,9 @@ packages:
         - {{ thispkg }}
       {% endfor %}
 
+permissive:
+  selinux.mode
+
+iiptables:
+  service.dead:
+    - enable: False 

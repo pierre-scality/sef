@@ -23,6 +23,7 @@ One need to change the password in the state, generate password with :
 '''
 openssl passwd -1
 '''
+You need as well to copy the id_rsa.pub key here for it to be pushed to the target.
 
 ### hosts.sls 
 Add hostname.
@@ -34,6 +35,8 @@ Add the list of packages you want to be installed.
 It is a list in file pkg.yaml where you have 1 pkg / line starting with - like :
 - tmux
 - dstat 
+- git
 
+It is also disabling iptables and permissing selinux
 ## Original writter 
 PM
