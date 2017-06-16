@@ -15,6 +15,6 @@ packages:
 permissive:
   selinux.mode
 
-iiptables:
+iptables:
   service.dead:
     - enable: False 
