@@ -1,6 +1,8 @@
 /etc/ssh/sshd_config:
-  file.comment:
-    - regex: PasswordAuthentication.*no
+  file.replace:
+    - pattern: ^PasswordAuthentication.*
+    - repl: PasswordAuthentication yes 
+    - append_if_not_found: True
 
 sshd:
   service.running:
@@ -11,7 +13,7 @@ sshd:
 
 root:
   user.present:
-    - password: $1$ExZrpF5T$tgNSK3gMxDfMQnik.0tB4/
+    - password: $1$Fm6s6N09$t3m.IQ/ZawwfUf.IMlqcG0
 
 authorize sup key:
   ssh_auth.present:

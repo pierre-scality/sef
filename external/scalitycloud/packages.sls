@@ -15,6 +15,12 @@ packages:
 permissive:
   selinux.mode
 
+/etc/selinux/config:
+  file.replace:
+    - pattern: ^SELINUX=.*
+    - repl: SELINUX=disabled
+
+
 iptables:
   service.dead:
     - enable: False 
