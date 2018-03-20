@@ -1,0 +1,4 @@
+bindnetaddr: 10.100.0.0 
+cluster_name: dlm
+corosync_if: eth0
+cororole: ROLE_COROSYNC

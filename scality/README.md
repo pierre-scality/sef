@@ -8,3 +8,4 @@
 * multi-sproxyd: create several ring drivers in sproxyd + httpd conf
 * snmpd: push a working snmpd configuration + optionaly enable startup of snmpdtrapd on sup
 * cache: set up nginx lua cache in place of dewpoint standard httpd installation
+* corosync: install corosync for DACO 
