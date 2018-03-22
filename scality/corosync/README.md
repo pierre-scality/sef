@@ -8,9 +8,15 @@ It is installing package creating corosync.conf based on local definition file a
 Role ROLE_COROSYNC should be assigned to 5 of the store nodes 
 Roles ROLE_DLM should be assigned to fuse connectors that belongs to the dlm cluster
 
-store node will have a vote in the quorum but not dlm nodes.
+To add role use below salt command, do not add both DLM/COROSYNC on the same servers.
+```yaml
+  salt connectors[1-X] grains.append roles ['ROLE_DLM'] 
+  salt storenodes[1-X] grains.append roles ['ROLE_COROSYNC']
+```
 
+store node will have a vote in the quorum but not dlm nodes.  
 corosync.yaml file must be configured according local params
+
 ```yaml
 	bindnetaddr: 10.100.0.0 
 	cluster_name: dlm
