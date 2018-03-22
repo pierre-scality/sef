@@ -1,12 +1,6 @@
 corosync:
   pkg.installed
 
-filecreate:
-  file.managed:
-    - name : /etc/corosync/corosync.conf
-    - template: jinja
-    - source: salt://scality/corosync/corosync.conf.tmpl
-
 /etc/default/corosync:
   file.managed:
     - contents:
@@ -22,6 +16,14 @@ enable corosync:
   service.enabled:
     - name: corosync
 
+filecreate:
+  file.managed:
+    - name : /etc/corosync/corosync.conf
+    - template: jinja
+    - source: salt://scality/corosync/corosync.conf.tmpl
+
 start corosync:
   service.running:
     - name: corosync
+    - watch:
+      - file: /etc/corosync/corosync.conf

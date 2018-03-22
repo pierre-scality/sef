@@ -62,17 +62,32 @@ logging {
                 tags: enter|leave|trace1|trace2|trace3|trace4|trace6
         }
 }
-nodelist {
+
+{# Note : jinja rendering leaves blank space on code syntax. #}
 {% set coroif = corosync.corosync_if %}
+{%- set dlm_target = "G@roles:ROLE_DLM" -%}
+{%- set dlm_nodes = salt["mine.get"](dlm_target, "grains.items", "compound") -%}
+{% set count_dlm = dlm_nodes|length %}
+nodelist {
+{% for dlm in dlm_nodes.keys()|sort %}
+{% set idx2 = loop.index %}
+  node {
+    ring0_addr: {{ dlm_nodes[dlm]['ip4_interfaces'][coroif][0] }}
+    quorum_votes: 0
+    name: {{ dlm }}
+    nodeid: {{ idx2 }}
+  }
+{% endfor %}
 {%- set target = "G@roles:ROLE_COROSYNC" -%}
 {%- set corosync_nodes = salt["mine.get"](target, "grains.items", "compound") -%}
 {% for node in corosync_nodes.keys()|sort %}
-{% set idx = loop.index %}
+{# Handily loop is not resetting and than starts from last idx #}
+{% set idx1 = loop.index %}
   node {
     ring0_addr: {{ corosync_nodes[node]['ip4_interfaces'][coroif][0] }}
-    quorum_votes: 0
+    quorum_votes: 1
     name: {{ node }}
-    nodeid: {{ idx }}
+    nodeid: {{ idx1 + count_dlm}}
   }
 {% endfor %}
 }
