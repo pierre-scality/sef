@@ -8,6 +8,9 @@ include:
 /etc/dlm/:
   file.directory
 
+/var/log/dlm_controld/:
+  file.directory
+
 /etc/dlm/dlm.conf:
   file.managed:
     - contents:
@@ -33,3 +36,6 @@ scality-sfused:
     - formatter: json
     - create: false
     - merge_if_exists: true 
+
+scality-nasdk-tools:
+  pkg.installed
