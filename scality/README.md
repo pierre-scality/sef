@@ -9,3 +9,6 @@
 * snmpd: push a working snmpd configuration + optionaly enable startup of snmpdtrapd on sup
 * cache: set up nginx lua cache in place of dewpoint standard httpd installation
 * corosync: install corosync for DACO 
+* svsd: svsd config (now obsolete by installer)
+* geo: GEOS configuration files (specific customer oriented)
+* switch: GEOS switch replication states
