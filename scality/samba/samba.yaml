@@ -1,4 +1,1 @@
-nssmode: "files winbind"
-search: pmhpe.local
-nameserver: ['10.100.1.15']
-realm: PMHPE.LOCAL
+../local/samba.yaml.local
