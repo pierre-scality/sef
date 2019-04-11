@@ -1,0 +1,77 @@
+#!/bin/bash
+# Copyright 2013 Scality Ltd
+#
+# chkconfig: 2345 85 15
+# description: Scality Multi RS2 Connectors
+#
+
+. /etc/rc.d/init.d/functions
+
+# Load configuration
+[ -f /etc/sysconfig/scality-rest-connector ] && . /etc/sysconfig/scality-rest-connector
+[ -f /etc/sysconfig/scality-multi-rs2 ] && . /etc/sysconfig/scality-multi-rs2
+
+if [ -n "$CORE_PATTERN" ]; then
+	mkdir -p $(dirname "$CORE_PATTERN")
+	echo "$CORE_PATTERN" > /proc/sys/kernel/core_pattern
+	echo 1 > /proc/sys/kernel/core_uses_pid
+	ulimit -c unlimited
+	DAEMON_COREFILE_LIMIT='unlimited'
+fi
+
+RETVAL=0
+prog=connector
+pidwait=5
+
+start() {
+	pidlist=`/sbin/pidof bizstore`
+
+	if [ -z "${pidlist}" ]
+	then
+		for i in `seq $BIZSTORE_COUNT`; do
+			echo -n $"Starting $prog $i: "
+			daemon /usr/local/bin/bizstore -b -c /etc/scality-rest-connector-$i $BIZSTORE_OPTIONS
+			#proc_number=3;for j in `pgrep bizstore | sed '1d; n; d'`; do proc_number=$(($proc_number+1)); taskset -p -c $proc_number $j ; done
+			RETVAL=$?
+			echo
+		done
+		pidofproc bizstore > /var/run/scality-rest-connector.pid
+		[ $RETVAL = 0 ] && touch /var/lock/subsys/scality-rest-connector
+	else
+		echo -n "Daemon already running (pid ${pidlist})"
+	fi
+	return $RETVAL
+}
+
+stop() {
+	echo -n $"Stopping ${prog}s: "
+	killproc -p /var/run/scality-rest-connector.pid -d $pidwait
+	RETVAL=$?
+	echo
+	killall -KILL bizstore 2>/dev/null
+	[ $RETVAL = 0 ] && rm -f /var/lock/subsys/scality-rest-connector
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	status)
+		status -p /var/run/scality-rest-connector.pid bizstore
+		RETVAL=$?
+		;;
+
+	*)
+		echo $"Usage: $0 {start|stop|restart|status}"
+		exit 1
+		;;
+esac
+
+exit $RETVAL

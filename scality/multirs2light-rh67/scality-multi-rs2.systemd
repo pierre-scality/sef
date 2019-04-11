@@ -1,0 +1,14 @@
+[Unit]
+Description=Scality REST Connector %i
+After=network.target
+Requires=network.target
+
+[Service]
+LimitCORE=infinity
+EnvironmentFile=/etc/sysconfig/scality-rest-connector
+Type=forking
+ExecStartPre=/sbin/sysctl kernel.core_pattern=${CORE_PATTERN}
+ExecStart=/usr/local/bin/bizstore -m -b -p /var/run/bizstore-%i.pid -c /etc/scality-rest-connector-%i $BIZSTORE_OPTIONS
+
+[Install]
+WantedBy=multi-user.target

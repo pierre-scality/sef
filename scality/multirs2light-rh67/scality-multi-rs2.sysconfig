@@ -1,0 +1,5 @@
+# scality-multi-rs2 configuration file
+# add extra startup options for multi-rs2 here
+
+BIZSTORE_COUNT={{ nbinstances }}
+
