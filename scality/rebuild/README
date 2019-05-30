@@ -1,0 +1,10 @@
+* Formula to help rebuild server from scratch
+
+For salt install salt-ssh is needed with a roster.
+
+''' 
+sydipdsclr103:
+ host: 10.108.73.103
+ user: root
+ priv: /root/.ssh/id_rsa
+'''

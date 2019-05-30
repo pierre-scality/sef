@@ -1,0 +1,16 @@
+etc/
+etc/salt/
+etc/salt/grains
+etc/
+etc/nginx/
+etc/nginx/*
+etc/nginx/conf.d/
+etc/nginx/conf.d/*
+etc/sysctl.d/
+etc/sysctl.d/*
+etc
+etc/logrotate.d
+etc/logrotate.d/*
+etc/rsyslog.conf
+etc/rsyslog.d
+etc/rsyslog.d/*
