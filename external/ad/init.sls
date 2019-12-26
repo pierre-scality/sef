@@ -39,8 +39,18 @@ Create reverse zone:
 Create ad srv entry in DNS:
   cmd.run:
     - name: samba-tool dns add {{ ownip }}  {{ad.realm}} {{ grains['host']  }} A {{ ownip }} -U administrator --password={{ ad.adminpass }}
+    - unless: nslookup infra1.{{ad.realm}}
 
 /etc/nsswitch.conf:
   file.replace:
     - pattern: ^hosts:.*
     - repl: "hosts: files dns"
+
+Remove passwd complexity:
+  cmd.run:
+    - name: samba-tool domain passwordsettings set --complexity=off
+
+Passwd min length:
+  cmd.run:
+    - name: samba-tool domain passwordsettings set --min-pwd-length=1
+
