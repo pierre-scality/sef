@@ -1,9 +1,7 @@
-nssmode: "files winbind"
-testuser: samba
-testgroup: scality
-processes: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
 realm: SCALJP.ORG
 addomain: SCALJP
 adminpass: scaljp%3080
 iface: eth0
 reverse: 200.10.in-addr.arpa
+dnsfwd: 10.100.1.1
+forcedns: true

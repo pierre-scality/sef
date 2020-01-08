@@ -23,6 +23,14 @@ cifs-utils:
       - nameserver {{ownip }}
       - search {{ ad.realm }}
 
+{%- if ad.forcedns == True %}
+/etc/sysconfig/network-scripts/ifcfg-eth0:
+  file.line:
+    - mode: ensure
+    - content: PEERDNS=no
+    - after: BOOTPROTO
+{% endif %}
+
 Create AD server:
   cmd.run:
     - name: samba-tool domain provision --use-rfc2307 --server-role=dc --use-rfc2307 --dns-backend=SAMBA_INTERNAL --realm={{ ad.realm }}  --domain={{ad.addomain}} --adminpass="{{ ad.adminpass }}"
@@ -53,4 +61,18 @@ Remove passwd complexity:
 Passwd min length:
   cmd.run:
     - name: samba-tool domain passwordsettings set --min-pwd-length=1
+
+/etc/samba/smb.conf:
+  file.line:
+    - content: dns forwarder = {{ ad.dnsfwd }}
+    - match: "dns\ forwarder.*"
+    - mode: replace
+
+add line if replace did not work:
+  file.line:
+    - name: /etc/samba/smb.conf
+    - content: dns forwarder = {{ ad.dnsfwd }}
+    - mode: ensure
+    - after: workgroup
+    - unless: grep -q "dns forwarder" /etc/samba/smb.conf
 
