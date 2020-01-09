@@ -2,6 +2,7 @@
 
 This formula create a SMB based AD server 
 It needs sernet samba version which offers samba-tool command
+Still in devlopement
 
 # Configuration
 Copy the files in your salt formula root /ad directory 
