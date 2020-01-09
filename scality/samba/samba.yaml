@@ -1,1 +1,13 @@
-../local/samba.yaml.local
+nssmode: "files winbind"
+testuser: samba
+testgroup: scality
+processes: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
+dlm8: true
+dlm8_network: 10.200.0.0/16
+sfusedconf: /etc/scality/sfused.conf
+sfusedquota: true
+ad: True
+realm: SCALJP.ORG
+addomain: SCALJP
+dnsserver: 10.200.4.135
+forcedns: true
