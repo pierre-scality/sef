@@ -1,0 +1,3 @@
+smbservices: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
+clustername: ctdbcluster
+security: ads

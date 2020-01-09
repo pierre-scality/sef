@@ -1,0 +1,60 @@
+{% from "scality/samba/samba.jinja" import samba with context %}
+
+[global]
+netbios name = ctdbcluster
+clustering = yes
+security = {{ samba.security }}  
+{%- if samba.security == "ads" %}
+realm = {{ samba.realm }}
+workgroup = {{ samba.workgroup }}
+idmap config * : backend = tdb
+idmap config * : range = 100000-299999
+idmap config {{ samba.workgroup }} : backend = rid
+idmap config {{ samba.workgroup }} : range = 2600000-3999999
+{%- endif %}
+server string = Samba Server Version %v
+max protocol = SMB3
+encrypt passwords = yes
+template shell = /bin/bash 
+template homedir = /home/%D/%U 
+#nt acl support = yes
+#inherit acls = Yes
+store dos attributes = yes
+inherit permissions = Yes
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread acl_xattr extd_audit
+ea support = yes
+aio write size = 1
+aio read size = 1
+
+dos charset=CP850 # Default charset for DOS client. Auto fallback to ASCII
+unix charset=UTF-8
+log file = /var/log/samba/%m.log
+max log size = 100000
+log level = 3
+guest account = nobody 
+
+machine password timeout = 0
+
+[test1]
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread acl_xattr extd_audit
+comment = Test folder with acl_xattr
+path = /ring/fs/samba
+valid users = samba
+read only = no
+browseable = no
+
+[test2]
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread  extd_audit
+comment = Test folder without acl_xattr
+path = /ring/fs/samba
+valid users = samba
+read only = no
+browseable = no
+
+[test]
+vfs objects = fileid ring catia fruit streams_xattr aio_pthread acl_xattr extd_audit
+comment = Test folder with acl_xattr
+path = /ring/fs/test
+valid users = test, scality, user01
+read only = no
+browseable = no
