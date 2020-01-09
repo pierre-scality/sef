@@ -48,11 +48,17 @@ Add algorithm:
 
 /etc/ctdb/nodes:
   file.managed:
-    - source: salt://scality/ctdb/files/nodes
+    - contents:
+{%- for node in ctdb.ctdbmember %}
+      - {{ node }}
+{%- endfor %}
 
 /etc/ctdb/public_addresses:
   file.managed:
-    - source: salt://scality/ctdb/files/public_addresses
+    - contents:
+{%- for vip in ctdb.ctdbvip %}
+      - {{ vip }}
+{%- endfor %}
 
 /etc/ctdb/events.d/09.sfused:
   file.managed:

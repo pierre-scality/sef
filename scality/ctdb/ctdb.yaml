@@ -1,3 +1,5 @@
 smbservices: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
 clustername: ctdbcluster
 security: ads
+ctdbvip: ['1.1.1.1/24 eth0']
+ctdbmember: ['10.100.1.50','10.100.3.129']
