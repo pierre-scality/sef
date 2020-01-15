@@ -14,6 +14,8 @@ ctdbmember:
   => list member of the cluster (python list format)
 ctdbvip:
   => list the vip (with iface python list format)
+ctdbconf:
+  => ctdb configuration file (can be on sysconf/default dir sernet link both files)
 
 ## Usage
 Copy the files to /srv/scality/salt/local/scality/ctdb

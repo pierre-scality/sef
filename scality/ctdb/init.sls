@@ -9,17 +9,29 @@ sernet-samba-ctdb:
 Uncomment winbind:
   file.uncomment:
     - regex: CTDB_MANAGES_WINBIND
-    - name: /etc/sysconfig/ctdb
+    - name: {{ ctdb.ctdbconf }}
 Ensure yes setting:
   file.replace:
     - pattern: CTDB_MANAGES_WINBIND.*
     - repl: CTDB_MANAGES_WINBIND=yes
-    - name: /etc/sysconfig/ctdb
+    - name: {{ ctdb.ctdbconf }}
 {%- else %}
   file.comment:
     - regex: CTDB_MANAGES_WINBIND.*
-    - name: /etc/sysconfig/ctdb
+    - name: {{ ctdb.ctdbconf }}
 {%- endif %}
+
+Enable public ip:
+  file.uncomment:
+    - regex: CTDB_PUBLIC_ADDRESSES
+    - name: {{ ctdb.ctdbconf }}
+
+
+Enable node file:
+  file.uncomment:
+    - regex: CTDB_NODES
+    - name: {{ ctdb.ctdbconf }}
+
 
 Set cluster name:
   file.replace:
@@ -42,9 +54,11 @@ Add fileid to vfs objects:
     - name: sed -i '/vfs objects/{s/fileid//;s/$/ fileid/}' /etc/samba/smb.conf
 
 Add algorithm:
-  cmd.run:
-    - name: sed -i '/vfs objects/ a fileid:algorithm = fsname' /etc/samba/smb.conf
+  file.line:
     - content: fileid:algorithm = fsname
+    - mode: ensure
+    - after: vfs objects
+    - name: /etc/samba/smb.conf
 
 /etc/ctdb/nodes:
   file.managed:
@@ -74,8 +88,8 @@ disable samba {{ p }}:
 restart sernet-samba-ctdb:
   service.running:
     - name: sernet-samba-ctdb
-    - reload: true
     - enable: true
+    - full_restart: true
     - watch:
-      - file: /etc/sysconfig/ctdb
+      - file: {{ ctdb.ctdbconf }}
       - file: /etc/samba/smb.conf
