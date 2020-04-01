@@ -1,0 +1,17 @@
+[Unit]
+Description=Dewpoint FastCGI CDMI server %i
+After=network.target
+Requires=network.target
+
+[Service]
+LimitCORE=infinity
+EnvironmentFile=/etc/sysconfig/scality-common
+EnvironmentFile=/etc/sysconfig/scality-dewpoint-fcgi
+Type=forking
+ExecStartPre=/sbin/sysctl kernel.core_pattern=${CORE_PATTERN}
+ExecStartPre=/usr/bin/load-fuse-module
+ExecStart=/usr/sbin/dewpoint.fcgi -p /var/run/scality-dewpoint-fcgi-%i.pid -c /etc/dewpoint-%i.js $DEWPOINT_OPTIONS
+PIDFile=/var/run/scality-dewpoint-fcgi-%i.pid
+
+[Install]
+WantedBy=multi-user.target
