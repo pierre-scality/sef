@@ -4,3 +4,15 @@ nameserver: ['10.100.1.1','10.100.1.2','10.100.1.3']
 realm: realm
 testuser: pierre
 processes: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
+testuser: samba
+testgroup: scality
+processes: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
+dlm8: true
+dlm8_network: 10.200.0.0/16
+sfusedconf: /etc/scality/sfused.conf
+sfusedquota: true
+ad: True
+realm: SCALJP.ORG
+addomain: SCALJP
+dnsserver: 10.200.4.135
+forcedns: true

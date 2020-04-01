@@ -10,3 +10,11 @@ sernet-samba-smbd:
   service.running:
     - watch: 
       - file: /etc/samba/smb.conf 
+
+scality-sfused:
+  service.running:
+    - enable: true
+    - reload: true
+    - watch:
+      - file: /etc/samba/smb.conf
+

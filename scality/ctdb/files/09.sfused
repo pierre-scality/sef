@@ -1,0 +1,13 @@
+#!/bin/sh
+
+case "$1" in
+takeip)
+        echo "CTDB node taking over $3. Clearing sfused and FUSE caches to prevent conflict"
+        echo 3 > /proc/sys/vm/drop_caches
+        echo 1 > /run/scality/connectors/sfused/misc/cache_drain:\0
+        echo 1 > /run/scality/connectors/sfused/misc/cache_drain:\1
+        echo 1 > /run/scality/connectors/sfused/misc/cache_drain:\3
+        logger -t "ctdb event" -p notice "Cache cleared after IP failover"
+        ;;
+esac
+

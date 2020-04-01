@@ -4,3 +4,4 @@
 
 * cosbench : cosbench installation 
 * network : network settings 
+* ad : Create an AD server based on sernet samba

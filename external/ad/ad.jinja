@@ -1,0 +1,7 @@
+#import parameters
+{% import_yaml 'ad/ad.yaml' as defaults with context %}
+
+# merge the pillar
+{% set ad = salt['grains.filter_by']({
+    'Linux': defaults
+}, grain='kernel', merge=salt['pillar.get']('ad:lookup'))%}
