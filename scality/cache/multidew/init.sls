@@ -5,6 +5,12 @@
 {% set myip   = salt['network.interface_ip'](scality.data_iface) %}
 {% set systemd_path = "/etc/systemd/system" %}
 
+{%- if salt['file.file_exists']('/etc/sysconfig/scality-common')  %}
+  {% set systemd_tpl = "scality-dewpoint-fcgi.service-6" %}
+{%- else %}
+  {% set systemd_tpl = "scality-dewpoint-fcgi.service-7" %}
+{% endif %}   
+
 remove existing sagentd entry:
   cmd.run:
     - name: /usr/bin/sagentd-manageconf -c /etc/sagentd.yaml del {{ myname }}-dewpoint
@@ -41,7 +47,7 @@ restart syslog:
 declare systemd multi instance: 
   file.managed:
     - name: {{ systemd_path }}/scality-dewpoint-fcgi@.service
-    - source: salt://scality/cache/multidew/scality-dewpoint-fcgi.service
+    - source: salt://scality/cache/multidew/{{ systemd_tpl }}
     - mode: 0755
   module.run:
     - name: service.systemctl_reload
@@ -56,7 +62,8 @@ Add dew {{ i }} in sagentd:
 
 stop dew:
   service.dead:
-    - name: scality-dewpoint-fcgi 
+    - name: scality-dewpoint-fcgi
+    - enable: false 
 
 {% for this in range(nb_instance) %}
 {% set inst = loop.index %}

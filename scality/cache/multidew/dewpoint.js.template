@@ -7,14 +7,14 @@
         "storage": "sofs",
         "log_onerror": 0,
         "log_level": "info",
-        "log_id": "dewpoint{{instance}}",
-        "log_facility": "local2",
+        "log_id": "dewpoint-{{instance}}",
+        "log_facility": "local5",
         "debug_mask": "NONE",
         "input_stream_block_size": 2097152,
         "output_stream_block_size": 2097152
     },
     "sofs": {
-        "command": ["sofs", "-c", "/etc/dewpoint-sofs.js", "-T", "3", "-n", "dewpoint{{ instance }}" ],
+        "command": ["sofs", "-c", "/etc/dewpoint-sofs.js", "-T", "3", "-n", "dewpoint-{{ instance }}" ],
         "enable_fuse": false,
         "enterprise_number": 37489
     },
