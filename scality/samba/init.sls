@@ -39,11 +39,6 @@ create test user:
     - uid: 2000
     - gid: scality
 
-create test user samba:
-  cmd.run:
-    - name: printf 'saltiscool\nsaltiscool' | pdbedit -a -u {{ samba.testuser }} 
-    - unless: pdbedit -L|grep -w {{ samba.testuser }}
-
 cifs-utils:
   pkg.installed:
     - fromrepo: base
@@ -69,3 +64,8 @@ scality-nasdk-tools:
     - content: PEERDNS=no
     - after: BOOTPROTO
 {% endif %}
+
+create test user samba:
+  cmd.run:
+    - name: printf 'saltiscool\nsaltiscool' | pdbedit -a -u {{ samba.testuser }} 
+    - unless: pdbedit -L|grep -w {{ samba.testuser }}
