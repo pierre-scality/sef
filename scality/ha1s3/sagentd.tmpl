@@ -1,0 +1,20 @@
+{%- from "scality/zookeeper/cluster.sls" import hosts with context %}
+{%- from "scality/ha1s3/ha1.jinja" import ha1 with context %}
+{%- set myip = grains['ip4_interfaces'][ha1.interface][0] %}
+{%- set myname = grains['id'] %}
+daemons:
+{%- for inst in range(ha1.sproxyd_count) %}
+  {{ myname }}-sproxyd{{inst}}:
+    address: {{ myip }}
+    path: /run{{inst}}/sproxyd
+    port: 2000{{ inst }}
+    type: sproxyd
+{%- endfor %}
+port: {{ ha1.port }}
+monitoring_heartbeat: false
+monitoring_heartbeat_hosts:
+{%- for zk in hosts %}
+- {{ zk }}
+{%- endfor %}
+monitoring_heartbeat_timeout: 5
+monitoring_watcher: true

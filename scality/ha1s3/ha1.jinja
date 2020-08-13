@@ -1,5 +1,5 @@
 #import parameters
-{% import_yaml 'scality/ha1/ha1.yaml' as defaults with context %}
+{% import_yaml 'scality/ha1s3/ha1.yaml' as defaults with context %}
 
 # merge the pillar
 {% set ha1 = salt['grains.filter_by']({

@@ -1,0 +1,5 @@
+# Interface where zk runs
+interface: eth0
+sproxyd_count=4
+s3_dir=/scality/ssd1/
+

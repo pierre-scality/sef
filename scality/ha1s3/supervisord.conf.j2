@@ -1,0 +1,13 @@
+
+[program:sagentd]
+command = /usr/bin/sagentd --no-daemon -c %(ENV_CONF_DIR)s/sagentd.yaml -p /var/run/sagentd.pid -l
+stdout_logfile = %(ENV_LOG_DIR)s/%(program_name)s.log
+stderr_logfile = %(ENV_LOG_DIR)s/%(program_name)s-stderr.log
+stdout_logfile_maxbytes=300MB
+stdout_logfile_backups=2
+stderr_logfile_maxbytes=300MB
+stderr_logfile_backups=2
+redirect_stderr=true
+autorestart = true
+autostart = true
+user=root
