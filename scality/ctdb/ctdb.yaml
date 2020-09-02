@@ -1,6 +1,13 @@
 smbservices: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
 ctdbconf: /etc/default/ctdb
 clustername: ctdbcluster
+zkclustername: ctdb_cluster
 security: ads
 ctdbvip: ['10.110.1.1/24 eth0']
 ctdbmember: ['10.200.1.232','10.200.5.47']
+# ctdb roles for 4.10 to be run at install time
+ctdb10helpers: ['08.scality-sfused','50.samba','55.stop_scality-sfused']
+# ctdb services to disable (handled by ctdb helpers)
+ctdb10services: ['scality-sfused','sernet-samba-smbd','sernet-samba-nmbd','sernet-samba-winbindd']
+norandomdir: true
+mountpoint: /ring/fs
