@@ -1,5 +1,5 @@
-{% from "scality/zookeeper/cluster.sls" import hosts with context %}
-{% from "scality/ha1/ha1.jinja" import ha1 with context %}
+{%- from "scality/zookeeper/cluster.sls" import hosts with context %}
+{%- from "scality/ha1/ha1.jinja" import ha1 with context %}
 monitoring_heartbeat_hosts:
 {%- for zk in hosts %}
 - {{ zk }}

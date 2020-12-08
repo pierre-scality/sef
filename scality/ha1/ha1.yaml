@@ -1,2 +1,2 @@
 # Interface where zk runs
-interface: be
+interface: bond0
