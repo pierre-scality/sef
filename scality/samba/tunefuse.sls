@@ -1,7 +1,7 @@
 {% from "scality/samba/samba.jinja" import samba with context%}
 {% if samba.dlm8_interface != None %}
 {% set iface = samba.dlm8_interface %}
-{% set dlm8_net = salt.network.subnets(iface) %}
+{% set dlm8_net = salt.network.subnets(iface)[0] %}
 {% else %} 
 {% set dlm8_net = samba.dlm8_network %}
 {% endif %}
