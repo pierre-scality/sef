@@ -5,6 +5,8 @@ testuser: samba
 testgroup: scality
 processes: ['sernet-samba-nmbd','sernet-samba-winbindd','sernet-samba-smbd']
 dlm8: false
+# leave empty interface if you prefer use network
+dlm8_interface: eth0
 dlm8_network: 10.200.0.0/16
 sfusedconf: /etc/scality/sfused.conf
 sfusedquota: true

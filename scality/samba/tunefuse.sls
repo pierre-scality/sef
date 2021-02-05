@@ -1,4 +1,10 @@
 {% from "scality/samba/samba.jinja" import samba with context%}
+{% if samba.dlm8_interface != None %}
+{% set iface = samba.dlm8_interface %}
+{% set dlm8_net = salt.network.subnets(iface) %}
+{% else %} 
+{% set dlm8_net = samba.dlm8_network %}
+{% endif %}
 
 tune cache:
   file.serialize:
@@ -15,13 +21,12 @@ tune cache:
         "quota":
           "enable": true,
           "enforce_limits": true,
-          "rpc_enable": true,
           "accuracy_step1_enable": true
 {% endif %}
 {%- if samba.dlm8 == true %}
         "dlm":
           "enable": 1,
-          "rpc_address_selector": "{{ samba.dlm8_network}}"
+          "rpc_address_selector": "{{ dlm8_net }}"
 {% endif %}
     - formatter: json
     - create: False
